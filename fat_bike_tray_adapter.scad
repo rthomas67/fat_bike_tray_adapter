@@ -4,7 +4,7 @@
     translate([0,5,-5.5])  // offset for top/bottom compare
         import("fat_bike_tray_adapter_shape_test_print_02.stl");
 
-testPrint=true;
+testPrint=false;
 
 overallLength= (testPrint) ? 5 : 110;
 
@@ -58,13 +58,42 @@ topEdgeCurveMatchOffset=9;
 
 trayEdgeThickness=5;
 
+slotCutOuterDia=170;
+slotCutWidth=30;
+slotCutThickness=5;
+slotCutPositionAdjustY=-30;
+
 
 $fn=50;
 overlap=0.01;
 
-linear_extrude(height=overallLength) {
-    completeShapeOutline();
-    // TODO: "cut" slots for straps
+difference() {
+    linear_extrude(height=overallLength) {
+        completeShapeOutline();
+    }
+    translate([0,slotCutOuterDia/2+slotCutPositionAdjustY,
+            overallLength/2-slotCutWidth/2])
+        slotCut();
+}
+
+// half circle band through the lower corners of the
+// fat-tire cradle / top part
+module slotCut() {
+    difference() {
+        cylinder(d=slotCutOuterDia, h=slotCutWidth);
+        translate([0,0,-overlap])
+            cylinder(d=slotCutOuterDia-slotCutThickness*2, 
+                h=slotCutWidth+overlap*2);
+        // cut off the top
+        translate([-slotCutOuterDia/2-overlap,0,-overlap])
+            cube([slotCutOuterDia+overlap*2,
+                slotCutOuterDia, slotCutWidth+overlap*2]);
+        // cut out the middle
+        translate([-trayInnerWidth/2-overlap,
+                -slotCutOuterDia+trayInnerWidth,-overlap])
+            cube([trayInnerWidth+overlap*2,
+                trayInnerWidth, slotCutWidth+overlap*2]);
+    }
 }
 
 module completeShapeOutline() {
