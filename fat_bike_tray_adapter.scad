@@ -6,11 +6,11 @@
 
 testPrint=false;
 
-overallLength= (testPrint) ? 5 : 110;
+overallLength= (testPrint) ? 5 : 100;
 
 roundnessRadius=5;
 
-tireDia=130;
+tireDia=120;
 
 topEdgeThickness=10;
 
@@ -58,7 +58,7 @@ topEdgeCurveMatchOffset=9;
 
 trayEdgeThickness=5;
 
-slotCutOuterDia=170;
+slotCutOuterDia=160;
 slotCutWidth=30;
 slotCutThickness=5;
 slotCutPositionAdjustY=-30;
